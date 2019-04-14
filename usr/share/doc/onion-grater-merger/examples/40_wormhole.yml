@@ -1,0 +1,32 @@
+## Copyright (C) 2016 - 2018 ENCRYPTED SUPPORT LP <adrelanos@riseup.net>
+## See the file COPYING for copying conditions
+
+---
+- exe-paths:
+    - '*'
+  users:
+    - '*'
+  hosts:
+    - '*'
+  commands:
+    GETINFO:
+      - 'signal/names'
+      - 'events/names'
+      - 'onions/current'
+      - 'onions/detached'
+      - 'config/defaults'
+      - pattern: 'config/defaults'
+        response:
+        - pattern:     '250 OK'
+          replacement: '250 OK'
+        - pattern:     '.*'
+          replacement: '250+config/defaults='
+    GETCONF:
+      - pattern: 'SOCKSPort'
+        response:
+        - pattern:     '250-SocksPort=.*'
+          replacement: '250-SocksPort=127.0.0.1:9150'
+        - pattern:     '250 SocksPort=.*'
+          replacement: '250 SocksPort=127.0.0.1:9150'
+    USEFEATURE:
+      - 'EXTENDED_EVENTS'
